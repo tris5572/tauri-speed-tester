@@ -1,49 +1,43 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+// import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [array, setArray] = useState<number[]>([]);
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const LOOP_COUNT = 100;
+
+  const run = async (f: string) => {
+    const before = performance.now();
+    // 100回実行する
+    for (let i = 0; i < LOOP_COUNT; i++) {
+      await invoke(f);
+    }
+    const time = performance.now() - before;
+    setArray([...array, time]);
+  };
+
+  // async function greet() {
+  //   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+  //   setGreetMsg(await invoke("greet", { name }));
+  // }
 
   return (
     <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+      <button onClick={() => run("f0")}>何もしない関数 f0 を実行</button>
 
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div>
+        {" 最新10件: "}
+        {array.length === 0
+          ? "-"
+          : array.slice(-10).map((v) => `${Math.round(v)} `)}
       </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
+      <div>
+        {"平均値: "}
+        {Math.round(array.reduce((acc, cur) => acc + cur, 0) / array.length)}
+      </div>
+      <button onClick={() => setArray([])}>結果をリセット</button>
     </main>
   );
 }
