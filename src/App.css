@@ -91,6 +91,12 @@ button {
   outline: none;
 }
 
+.flex {
+  display: flex;
+  gap: 4px;
+  justify-content: space-between;
+}
+
 #greet-input {
   margin-right: 5px;
 }

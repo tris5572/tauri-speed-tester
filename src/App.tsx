@@ -6,13 +6,13 @@ import "./App.css";
 function App() {
   const [array, setArray] = useState<number[]>([]);
 
-  const LOOP_COUNT = 100;
+  const LOOP_COUNT = 500;
 
-  const run = async (f: string) => {
+  const run = async (f: string, args?: any) => {
     const before = performance.now();
     // 100回実行する
     for (let i = 0; i < LOOP_COUNT; i++) {
-      await invoke(f);
+      await invoke(f, args);
     }
     const time = performance.now() - before;
     setArray([...array, time]);
@@ -25,8 +25,12 @@ function App() {
 
   return (
     <main className="container">
-      <button onClick={() => run("f0")}>何もしない関数 f0</button>
-      <button onClick={() => run("f1")}>数値を返すだけの関数 f1</button>
+      <div className="flex">
+        <button onClick={() => run("f0")}>何もしない関数 f0</button>
+        <button onClick={() => run("f1")}>数値を返すだけの関数 f1</button>
+        <button onClick={() => run("f2")}>文字列を返すだけの関数 f2</button>
+        <button onClick={() => run("f3", { v: 1 })}>数値→数値の関数 f3</button>
+      </div>
 
       <div>
         {" 最新10件: "}
