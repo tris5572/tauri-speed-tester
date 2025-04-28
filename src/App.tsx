@@ -25,7 +25,8 @@ function App() {
 
   return (
     <main className="container">
-      <button onClick={() => run("f0")}>何もしない関数 f0 を実行</button>
+      <button onClick={() => run("f0")}>何もしない関数 f0</button>
+      <button onClick={() => run("f1")}>数値を返すだけの関数 f1</button>
 
       <div>
         {" 最新10件: "}
