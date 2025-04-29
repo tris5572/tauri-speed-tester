@@ -18,6 +18,16 @@ function App() {
     setArray([...array, time]);
   };
 
+  async function run10() {
+    const before = performance.now();
+    for (let i = 0; i < LOOP_COUNT / 2; i++) {
+      await invoke("f0");
+      await invoke("f1");
+    }
+    const time = performance.now() - before;
+    setArray([...array, time]);
+  }
+
   // async function greet() {
   //   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
   //   setGreetMsg(await invoke("greet", { name }));
@@ -30,6 +40,7 @@ function App() {
         <button onClick={() => run("f1")}>数値を返すだけの関数 f1</button>
         <button onClick={() => run("f2")}>文字列を返すだけの関数 f2</button>
         <button onClick={() => run("f3", { v: 1 })}>数値→数値の関数 f3</button>
+        <button onClick={() => run10()}>交互に呼び出す f10</button>
       </div>
 
       <div>
